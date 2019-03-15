@@ -7,32 +7,33 @@ Page({
    * 页面的初始数据
    */
   data: {
-    switchtab: [
+    switchtab: [   //头部tab状态
     {
-        name: '待接受',
+      name: '待接受',
     },
     {
       name: '进行中',
     }
     ],
-    current:0,
-    coupons:[],
-    show:false
+    current:0,  // 0为待接受，1为进行中
+    coupons:[],  //列表初始值
+    show:false    //在没有数据状态下显示的页面内容，初始设置为false
   },
   /**
    * 生命周期函数--监听页面加载
-   */// 142202199710273329
+   */
   onLoad: function (options) {
     var that = this;
   },
+  // 点击不同状态请求俩个状态下的数据
   switchNav: function (e){
     var that = this;
     var index = e.target.dataset.index;
-    wx.setStorageSync('current', index)
+    wx.setStorageSync('current', index)  //保存到本地做页面返回时的监测
     that.setData({
         current: index
     },function(){
-      if(that.data.current==0){
+      if(that.data.current==0){ //如果选择待接受时发生的请求
         wx.request({
           url: app.globalData.baseUrl + '/customerorder/by_orderStatus_and_serviceStatus',
           method: 'post',
@@ -45,24 +46,24 @@ Page({
           },
           success: function (res) {
             console.log(res)
-            if (res.data.data.length == 0){
+            if (res.data.data.length == 0){  //返回数据为空时show为true
               that.setData({
                 show: true
               })
             }else{
-              that.setData({
+              that.setData({   //否则为false
                 show: false
               })
-            }
-            var timestamp = [];
+            } 
+            var timestamp = [];    //自定义数组（处理时间用）
             for (var i = 0; i < res.data.data.length; i++) {
-              timestamp.push(new Date(res.data.data[i].createTime));
-              var arr = [];
+              timestamp.push(new Date(res.data.data[i].createTime));    //把所有数据中的时间循环并保存到该数组
+              var arr = [];   //自定义数组
               for (var j = 0; j < timestamp.length; j++) {
                   y = timestamp[j].getFullYear(),
                   m = timestamp[j].getMonth() + 1,
                   d = timestamp[j].getDate();
-                arr.push(y + '.' + (m < 10 ? "0" + m : m) + "." + (d < 10 ? "0" + d : d));
+                arr.push(y + '.' + (m < 10 ? "0" + m : m) + "." + (d < 10 ? "0" + d : d));  //经过处理分为年月日再次存到arr数组
               }
             }
             var newtime = new Date().toDateString()
@@ -72,7 +73,7 @@ Page({
             })
           }
         });
-      } else if (that.data.current == 1){
+      } else if (that.data.current == 1) {   //如果选择进行中时发生的请求
         wx.request({
           url: app.globalData.baseUrl + '/customerorder/staff_by_orderStatus_and_serviceStatus',
           method: 'post',
@@ -86,8 +87,8 @@ Page({
           },
           success: function (res) {
             console.log(res)
-            if (res.data.data.length == 0) {
-              that.setData({
+            if (res.data.data.length == 0) {    //这里的逻辑处理同上（不同状态下请求数据后的处理）
+              that.setData({ 
                 show: true
               })
             } else {
@@ -96,7 +97,7 @@ Page({
               })
             }
             var timestamp = [];
-            for (var i = 0; i < res.data.data.length; i++) {
+            for (var i = 0; i < res.data.data.length; i++) {   //这里的逻辑处理和在待接受时进行的逻辑处理一样
               timestamp.push(new Date(res.data.data[i].createTime));
               var arr = [];
               for (var j = 0; j < timestamp.length; j++) {
@@ -134,7 +135,7 @@ Page({
       success: res =>{
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         if (res.code) {
-          wx.request({
+          wx.request({   //code获取成功时请求token
             url: app.globalData.baseUrl + '/auth/caregivers_login',
             method: 'POST',
             data: {
@@ -145,16 +146,17 @@ Page({
             },
             success: function (res) {
               console.log(res)
-              wx.setStorageSync('openId', res.data.data.openId)
-              if (res.data.data.certificationStatus == 2){
-                wx.setStorage({
+              wx.setStorageSync('openId', res.data.data.openId)  //获取到openID保存到本地
+              if (res.data.data.certificationStatus == 2){  //若果登陆状态返回2时执行以下操作
+                wx.setStorage({  //保存token到本地
                   key: 'token',
                   data: res.data.data.token,
                   success(res){
                     if (!wx.getStorageSync('current')||wx.getStorageSync('current')==0){
-                      that.setData({
+                      that.setData({          //如果本地没有current这个值或这个值为0就默认为0
                         current: 0
                       })
+                      //在登录状态为2且是待接受状态下请求数据
                     wx.request({
                       url: app.globalData.baseUrl + '/customerorder/by_orderStatus_and_serviceStatus',
                       method: 'post',
@@ -167,19 +169,20 @@ Page({
                       },
                       success: function (res) {
                         console.log(res)
-                        if (res.data.data.length==0){
+                        if (res.data.data.length == 0) {  //返回数据为空时show为true
                           that.setData({
                             show:true
                           })
                         }
-                        var timestamp = [];
+                        var timestamp = [];  //自定义数组（存放时间戳）
                         for (var i = 0; i < res.data.data.length; i++) {
                           timestamp.push(new Date(res.data.data[i].createTime));
                           var arr = [];
                           for (var j = 0; j < timestamp.length; j++) {
-                            y = timestamp[j].getFullYear(),
+                              y = timestamp[j].getFullYear(),
                               m = timestamp[j].getMonth() + 1,
                               d = timestamp[j].getDate();
+                              // 时间戳准换为时间格式保存到arr数组
                             arr.push(y + '.' + (m < 10 ? "0" + m : m) + "." + (d < 10 ? "0" + d : d));
                           }
                         }
@@ -189,11 +192,12 @@ Page({
                         })
                       }
                     });
+                    // 本地没有current或者current为1时执行的操作
                     }else if(wx.getStorageSync('current') && wx.getStorageSync('current') == 1) {
                       that.setData({
                         current:1
                       })
-                      wx.request({
+                      wx.request({   //在登录状态为2时且是进行中时发生的请求
                         url: app.globalData.baseUrl + '/customerorder/staff_by_orderStatus_and_serviceStatus',
                         method: 'post',
                         data: {
@@ -206,16 +210,16 @@ Page({
                         },
                         success: function (res) {
                           console.log(res)
-                          if (res.data.data.length == 0) {
+                          if (res.data.data.length == 0) { //返回数据为空时show为true
                             that.setData({
                               show: true
                             })
                           }
-                          var timestamp = [];
+                          var timestamp = [];   //自定义数组（存放时间戳）
                           for (var i = 0; i < res.data.data.length; i++) {
                             timestamp.push(new Date(res.data.data[i].createTime));
                             var arr = [];
-                            for (var j = 0; j < timestamp.length; j++) {
+                            for (var j = 0; j < timestamp.length; j++) {  // 时间戳准换为时间格式保存到arr数组
                               y = timestamp[j].getFullYear(),
                                 m = timestamp[j].getMonth() + 1,
                                 d = timestamp[j].getDate();
@@ -231,7 +235,7 @@ Page({
                     }
                   }
                 })
-              } else {
+              } else {  //否则登录状态不为2时跳转到登录界面要求护工登录绑定
                 wx.redirectTo({
                   url: '../login/login',
                 })
@@ -244,13 +248,14 @@ Page({
       }
     })
   },
+  // 点击列表发生的事件，跳转到排班详情页面
   clickDetails: function(e){
     var that=this;
-    var orderNo = e.currentTarget.dataset.orderno
+    var orderNo = e.currentTarget.dataset.orderno  //订单号
     app.orderNo = orderNo; 
-    var orderStatus = e.currentTarget.dataset.orderstatus
+    var orderStatus = e.currentTarget.dataset.orderstatus   //订单状态
     app.orderStatus = orderStatus;
-    wx.setStorageSync('current', that.data.current)
+    wx.setStorageSync('current', that.data.current)   //并把current状态存到本地，页面返回时监测要跳到哪个状态下
     wx.navigateTo({
       url: '../scheduling_details/scheduling_details',
     })

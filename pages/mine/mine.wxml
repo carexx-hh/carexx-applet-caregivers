@@ -14,7 +14,7 @@
  </block>
 </view>
 <view class='middle'>
-<view class='set'  bindtap='click_order'>
+<view class='set'  bindtap='click_phone'>
 <image src='./images/set.png' class='img' style='width:40rpx;height:40rpx;'></image>
 <view class='m-s'  hover-class="none">手机换绑</view>
 <image src='./images/j-t.png' class='j-t' style='width:11rpx;height:21rpx;'></image>

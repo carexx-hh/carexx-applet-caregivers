@@ -1,3 +1,4 @@
+const PublicFun = require('../../utils/PublicFun.js');
 var app = getApp();
 Page({
   /**
@@ -8,6 +9,20 @@ Page({
     currentTime: 60, //倒计时
     disabled: false, //按钮是否禁用
     color: '#fff',
+    phone: '', //获取到的手机栏中的值
+    code: '',
+  },
+  //获取手机栏input中的值
+  phoneInput: function (e) {
+    this.setData({
+      phone: e.detail.value
+    })
+  },
+  // 获取验证码
+  codeInput: function (e) {
+    this.setData({
+      code: e.detail.value
+    })
   },
   bindButtonTap: function () {
     var that = this;
@@ -25,12 +40,32 @@ Page({
       errMsg = '手机号格式有误！';
     } else {
       //当手机号正确的时候提示用户短信验证码已经发送
-      wx.showToast({
-        title: '短信验证码已发送',
-        icon: 'none',
-        duration: 2000
+      wx.request({
+        url: app.globalData.baseUrl + '/sms/send_verify_code/' + phone,
+        method: 'get',
+        header: {
+          'content-Type': 'application/x-www-form-urlencoded',
+          'auth-token': that.data.token
+        },
+        success: function (res) {
+          console.log(res)
+          if (res.data.code == 200) {
+            setTimeout(function () {
+              wx.showToast({
+                title: '短信验证码已发送',
+                icon: 'none',
+                duration: 2000
+              });
+            }, 500);
+          } else if (res.data.code == 500) {
+            wx.showToast({
+              title: '短信验证码发送失败',
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        }
       });
-
       //设置一分钟的倒计时
       var interval = setInterval(function () {
         currentTime--; //每执行一次让倒计时秒数减一

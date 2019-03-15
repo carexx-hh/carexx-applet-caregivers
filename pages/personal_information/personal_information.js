@@ -11,7 +11,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    that.setData({
+    that.setData({  //从本地获取userInfo，token，userid放到data里
       userInfo: wx.getStorageSync('userInfo'),
       token: wx.getStorageSync('token'),
       userId: wx.getStorageSync('userId')
@@ -29,7 +29,7 @@ Page({
    */
   onShow: function () {
     var that = this;
-    wx.request({
+    wx.request({  //获取护工个人信息的请求
       url: app.globalData.baseUrl + '/inststaff/get_id/',
       method: 'get',
       header: {

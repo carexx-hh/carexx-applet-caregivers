@@ -8,7 +8,7 @@ Page({
    */
   data: {
     userInfo:{},
-    show:false,
+    show:false, //判断部分页面是否展示，初始值为false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -16,7 +16,7 @@ Page({
   onLoad: function (options) {
     var that=this;
     that.setData({
-      token: wx.getStorageSync('token'),
+      token: wx.getStorageSync('token'),  //从本地拿到token存到data
      })
     },
   /**
@@ -31,7 +31,7 @@ Page({
    */
   onShow: function () {
     var that=this;
-    if (wx.getStorageSync('userInfo')){
+    if (wx.getStorageSync('userInfo')){  //查看是否获取个人信息
       that.setData({
         show:false,
         userInfo: wx.getStorageSync('userInfo')
@@ -41,6 +41,7 @@ Page({
         show:true
       })
     }
+    // 请求护工的后台信息
     wx.request({
       url: app.globalData.baseUrl + '/inststaff/get_id',
       method: 'get',
@@ -56,6 +57,7 @@ Page({
       }
     });
   },
+  // 调用微信方法获取用户个人信息权限
   getUserInfo: function (e) {
     var that = this;
       wx.getUserInfo({
@@ -69,12 +71,14 @@ Page({
         }
       })
   },
+  // 查看护工具体的个人信息，跳转到个人信息页面
   click_details:function(){
      wx.navigateTo({
        url: '../personal_information/personal_information',
      })
   },
-  click_order:function(){
+  // 跳转手机换绑功能
+  click_phone:function(){
     wx.navigateTo({
       url: '../my_order/my_order',
     })
