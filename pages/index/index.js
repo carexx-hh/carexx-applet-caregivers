@@ -38,7 +38,8 @@ Page({
           url: app.globalData.baseUrl + '/customerorder/by_orderStatus_and_serviceStatus',
           method: 'post',
           data: {
-            serviceStatus: 3
+            serviceStatus: 3,
+            serviceStaffId: wx.getStorageSync('serviceStaffId')
           },
           header: {
             'content-Type': 'application/x-www-form-urlencoded',
@@ -79,7 +80,8 @@ Page({
           method: 'post',
           data: {
             orderStatus: 4,
-            serviceStatus: 1
+            serviceStatus: 1,
+            serviceStaffId: wx.getStorageSync('serviceStaffId')
           },
           header: {
             'content-Type': 'application/x-www-form-urlencoded',
@@ -146,6 +148,7 @@ Page({
             },
             success: function (res) {
               console.log(res)
+              wx.setStorageSync('serviceStaffId', res.data.data.serviceStaffId) 
               wx.setStorageSync('openId', res.data.data.openId)  //获取到openID保存到本地
               if (res.data.data.certificationStatus == 2){  //若果登陆状态返回2时执行以下操作
                 wx.setStorage({  //保存token到本地
@@ -161,7 +164,8 @@ Page({
                       url: app.globalData.baseUrl + '/customerorder/by_orderStatus_and_serviceStatus',
                       method: 'post',
                       data: {
-                        serviceStatus:3
+                        serviceStatus:3,
+                        serviceStaffId: wx.getStorageSync('serviceStaffId')
                       },
                       header: {
                         'content-Type': 'application/x-www-form-urlencoded',
@@ -202,7 +206,8 @@ Page({
                         method: 'post',
                         data: {
                           orderStatus: 4,
-                          serviceStatus: 1
+                          serviceStatus: 1,
+                          serviceStaffId: wx.getStorageSync('serviceStaffId')
                         },
                         header: {
                           'content-Type': 'application/x-www-form-urlencoded',

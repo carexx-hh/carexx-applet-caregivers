@@ -41,11 +41,10 @@ Page({
     } else {
       //当手机号正确的时候提示用户短信验证码已经发送
       wx.request({
-        url: app.globalData.baseUrl + '/sms/send_verify_code/' + phone,
+        url: app.globalData.baseUrl + '/sms/send_verify_code_nurse/' + phone,
         method: 'get',
         header: {
           'content-Type': 'application/x-www-form-urlencoded',
-          'auth-token': that.data.token
         },
         success: function (res) {
           console.log(res)
