@@ -8,12 +8,12 @@ Page({
    */
   data: {
     switchtab: [   //头部tab状态
-    {
-      name: '待接受',
-    },
-    {
-      name: '进行中',
-    }
+        {
+        name: '待接受',
+        },
+        {
+        name: '进行中',
+        }
     ],
     current:0,  // 0为待接受，1为进行中
     coupons:[],  //列表初始值
@@ -51,15 +51,12 @@ Page({
               that.setData({
                 show: true
               })
-            }else{
-              that.setData({   //否则为false
-                show: false
-              })
+              return;
             } 
             var timestamp = [];    //自定义数组（处理时间用）
+            var arr = [];   //自定义数组
             for (var i = 0; i < res.data.data.length; i++) {
               timestamp.push(new Date(res.data.data[i].createTime));    //把所有数据中的时间循环并保存到该数组
-              var arr = [];   //自定义数组
               for (var j = 0; j < timestamp.length; j++) {
                   y = timestamp[j].getFullYear(),
                   m = timestamp[j].getMonth() + 1,
@@ -71,6 +68,7 @@ Page({
             that.setData({
               coupons: res.data.data,
               time: arr,
+              show: false
             })
           }
         });
@@ -99,9 +97,9 @@ Page({
               })
             }
             var timestamp = [];
+            var arr = [];
             for (var i = 0; i < res.data.data.length; i++) {   //这里的逻辑处理和在待接受时进行的逻辑处理一样
               timestamp.push(new Date(res.data.data[i].createTime));
-              var arr = [];
               for (var j = 0; j < timestamp.length; j++) {
                 y = timestamp[j].getFullYear(),
                   m = timestamp[j].getMonth() + 1,
@@ -179,9 +177,9 @@ Page({
                           })
                         }
                         var timestamp = [];  //自定义数组（存放时间戳）
+                        var arr = [];
                         for (var i = 0; i < res.data.data.length; i++) {
                           timestamp.push(new Date(res.data.data[i].createTime));
-                          var arr = [];
                           for (var j = 0; j < timestamp.length; j++) {
                               y = timestamp[j].getFullYear(),
                               m = timestamp[j].getMonth() + 1,
@@ -190,6 +188,7 @@ Page({
                             arr.push(y + '.' + (m < 10 ? "0" + m : m) + "." + (d < 10 ? "0" + d : d));
                           }
                         }
+                        console.log(arr)
                         that.setData({
                           coupons: res.data.data,
                           time: arr,
@@ -221,9 +220,9 @@ Page({
                             })
                           }
                           var timestamp = [];   //自定义数组（存放时间戳）
+                          var arr = [];
                           for (var i = 0; i < res.data.data.length; i++) {
                             timestamp.push(new Date(res.data.data[i].createTime));
-                            var arr = [];
                             for (var j = 0; j < timestamp.length; j++) {  // 时间戳准换为时间格式保存到arr数组
                               y = timestamp[j].getFullYear(),
                                 m = timestamp[j].getMonth() + 1,
