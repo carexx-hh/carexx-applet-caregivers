@@ -28,6 +28,9 @@ Page({
   // 点击不同状态请求俩个状态下的数据
   switchNav: function (e){
     var that = this;
+    this.setData({
+        coupons:[]
+    })
     var index = e.target.dataset.index;
     wx.setStorageSync('current', index)  //保存到本地做页面返回时的监测
     that.setData({

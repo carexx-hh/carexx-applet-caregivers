@@ -1,5 +1,5 @@
 <!--头部tab切换部分start-->
-<view class='menu' >
+<view class='menu' id='menu'>
 <view class="xuanx-ka {{index==current?'select':''}}" wx:for="{{switchtab}}" wx:key='' data-index="{{index}}" bindtap="switchNav" >{{item.name}}</view>
 </view>
  <!--头部tab切换部分end-->
