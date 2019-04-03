@@ -80,7 +80,7 @@ Page({
   // 跳转手机换绑功能
   click_phone:function(){
     wx.navigateTo({
-      url: '../my_order/my_order',
+        url: '../set_phone/set_phone',
     })
   },
   /**
