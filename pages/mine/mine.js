@@ -29,34 +29,34 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    var that=this;
-    if (wx.getStorageSync('userInfo')){  //查看是否获取个人信息
-      that.setData({
-        show:false,
-        userInfo: wx.getStorageSync('userInfo')
-      })
-    }else{
-      that.setData({
-        show:true
-      })
-    }
-    // 请求护工的后台信息
-    wx.request({
-      url: app.globalData.baseUrl + '/inststaff/get_id',
-      method: 'get',
-      header: {
-        'content-Type': 'application/x-www-form-urlencoded',
-        'auth-token': that.data.token
-      },
-      success: function (res) {
-        console.log(res)
-         that.setData({
-           info:res.data.data
-         })
-      }
-    });
-  },
+    onShow: function () {
+            var that=this;
+            if (wx.getStorageSync('userInfo')){  //查看是否获取个人信息
+            that.setData({
+                show:false,
+                userInfo: wx.getStorageSync('userInfo')
+            })
+        }else{
+            that.setData({
+                show:true
+            })
+        }
+        // 请求护工的后台信息
+        wx.request({
+        url: app.globalData.baseUrl + '/inststaff/get_id',
+        method: 'get',
+        header: {
+            'content-Type': 'application/x-www-form-urlencoded',
+            'auth-token': that.data.token
+        },
+        success: function (res) {
+            console.log(res)
+            that.setData({
+            info:res.data.data
+            })
+        }
+        });
+    },
   // 调用微信方法获取用户个人信息权限
   getUserInfo: function (e) {
     var that = this;

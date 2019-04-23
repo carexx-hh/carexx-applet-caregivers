@@ -11,26 +11,26 @@
 <!--  -->
 <view class='z_h'>
 <view class='z_h_name'>手机号码</view>
-<view class='z_h_info'>{{info.phone}}</view>
+<view class='z_h_info'>{{info.phone||''}}</view>
 </view>
 <!--  -->
 <view class='z_h'>
 <view class='z_h_name'>身份证</view>
-<view class='z_h_info'>{{info.idNo}}</view>
+<view class='z_h_info'>{{info.idNo||''}}</view>
 </view>
 <!--  -->
 <view class='z_h'>
 <view class='z_h_name'>地址</view>
-<view class='z_h_info'>{{info.address}}</view>
+<view class='z_h_info'>{{info.address||''}}</view>
 </view>
 <!--  -->
 <view class='z_h'>
 <view class='z_h_name' style='width:20%;'>所属医院</view>
-<view class='z_h_info' style='width:80%;'>{{info.instName}}</view>
+<view class='z_h_info' style='width:80%;'>{{info.instName||''}}</view>
 </view>
 <!--  -->
 <view class='z_h' style='border-bottom:none;'>
 <view class='z_h_name'>服务医院</view>
-<view class='z_h_info'>{{info.serviceInstName}}</view>
+<view class='z_h_info'>{{info.serviceInstName||''}}</view>
 </view>
 </view>
