@@ -57,6 +57,7 @@ Page({
         var starttimes = y + "年" + (m < 10 ? "0" + m : m) + "月" + (d < 10 ? "0" + d : d)+'日'
         that.setData({
           project: res.data.data[0],
+          serviceStaffId: wx.getStorageSync('serviceStaffId'),
           starttime:starttime,
           starttimes: starttimes
         })
